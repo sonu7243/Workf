@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IM BRAVE BOY - Star Rain RGB</title>
+
+<style>
+  /* Base Styles */
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: #020617; /* Very deep dark background */
+    color: white;
+    overflow-x: hidden;
+  }
+
+  /* 🌌 Star Rain Animation Container */
+  #star-rain {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1; /* Background ke liye */
+    pointer-events: none; /* Interactable nahi rahega */
+  }
+  
+  /* 🌠 Star Styling */
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0;
+    box-shadow: 0 0 10px white;
+    animation: fall linear infinite;
+  }
+  
+  /* 🏃 Star Falling Animation */
+  @keyframes fall {
+    0% { transform: translateY(-10px) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(110vh) scale(1); opacity: 0; }
+  }
+
+  /* ⚡ RGB Screen Blink (Background ko smooth glow dega) */
+  @keyframes screenBlink {
+    0% { box-shadow: 0 0 50px rgba(255, 0, 0, 0.3) inset; }
+    33% { box-shadow: 0 0 50px rgba(0, 255, 204, 0.3) inset; }
+    66% { box-shadow: 0 0 50px rgba(255, 0, 255, 0.3) inset; }
+    100% { box-shadow: 0 0 50px rgba(255, 0, 0, 0.3) inset; }
+  }
+
+  /* 🌈 Fast RGB Text Animation */
+  @keyframes rgbText {
+    0% { color: #ff0000; text-shadow: 0 0 15px #ff0000; }
+    33% { color: #00ffcc; text-shadow: 0 0 15px #00ffcc; }
+    66% { color: #ff00ff; text-shadow: 0 0 15px #ff00ff; }
+    100% { color: #ff0000; text-shadow: 0 0 15px #ff0000; }
+  }
+
+  /* 🏃 Moving Header Name Animation */
+  @keyframes moveName {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* Dark overlay overlay */
+  .dark-shutter {
+    background: rgba(0, 0, 0, 0.7); 
+    min-height: 100vh;
+    width: 100%;
+    animation: screenBlink 1.5s linear infinite; /* Smooth RGB glow */
+  }
+
+  /* RGB Text Class */
+  .rgb-fast {
+    animation: rgbText 0.6s linear infinite !important;
+    font-weight: 900;
+    text-transform: uppercase;
+    word-wrap: break-word; 
+  }
+
+  /* 📱 Header Fix */
+  header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background: rgba(0,0,0,0.95);
+    z-index: 1000;
+    padding: 15px 0;
+    overflow: hidden;
+  }
+  .moving-container {
+    white-space: nowrap;
+    display: inline-block;
+    animation: moveName 15s linear infinite;
+  }
+
+  /* 📱 Hero Section Responsive */
+  .hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+  }
+  .hero h1 { 
+    font-size: clamp(35px, 12vw, 85px); 
+    margin-bottom: 10px;
+    line-height: 1.1;
+  }
+  .hero p { 
+    font-size: clamp(18px, 5vw, 28px); 
+    max-width: 90%; 
+  }
+
+  /* 🖼️ Fixed Gallery Grid (Responsive) */
+  .gallery { padding: 130px 20px 70px; text-align: center; }
+  .grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+    gap: 20px; 
+  }
+  .grid img { 
+    width: 100%; 
+    height: 250px; 
+    object-fit: cover; 
+    border-radius: 20px; 
+    border: 5px solid white;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  /* Desktop View */
+  @media (min-width: 768px) {
+    .grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    .grid img { height: 450px; }
+  }
+
+  /* 🚪 Welcome Overlay */
+  #overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; z-index: 10000;
+  }
+  #enterBtn {
+    padding: 18px 50px; font-size: 24px; background: transparent;
+    color: white; border: 5px solid white; cursor: pointer;
+    border-radius: 50px; animation: rgbText 0.5s linear infinite;
+  }
+
+  /* Modal Zoom View */
+  .modal { display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); justify-content: center; align-items: center; }
+  .modal img { max-width: 95%; max-height: 85%; border: 6px solid white; border-radius: 15px; }
+  .close { position: absolute; top: 30px; right: 40px; font-size: 60px; cursor: pointer; color: white; }
+</style>
+</head>
+
+<body>
+
+<div id="star-rain"></div>
+
+<div id="overlay">
+  <h1 class="rgb-fast" style="font-size: 35px;">IM BRAVE BOY</h1>
+  <button id="enterBtn">START THE VIBE</button>
+</div>
+
+<div class="dark-shutter">
+  <header>
+    <div class="moving-container">
+       <span class="rgb-fast" style="font-size: 22px;">IM BRAVE GALLERY • IM BRAVE BOY • IM BRAVE GALLERY • IM BRAVE BOY •</span>
+    </div>
+  </header>
+
+  <audio id="bgMusic" loop>
+    <source src="song.mp3" type="audio/mp3">
+  </audio>
+
+  <section class="hero">
+    <h1 class="rgb-fast">IM BRAVE BOY</h1>
+    <p class="rgb-fast">WELCOME TO MY DANGEROUS WORLD</p>
+  </section>
+
+  <section id="gallery" class="gallery">
+    <h2 class="rgb-fast" style="font-size: 42px; margin-bottom: 40px;">THE GALLERY</h2>
+    <div class="grid">
+      <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1600" alt="Art 1">
+      <img src="https://images.unsplash.com/photo-1547891654-e66ed7ebb968?q=80&w=1600" alt="Art 2">
+      <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1600" alt="Art 3">
+      <img src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?q=80&w=1600" alt="Art 4">
+      <img src="https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=1600" alt="Art 5">
+    </div>
+  </section>
+</div>
+
+<div id="modal" class="modal">
+  <span class="close">&times;</span>
+  <img id="modalImg">
+</div>
+
+<script>
+  // 🌌 Star Rain Generator Function
+  function createStar() {
+    const starRainContainer = document.getElementById("star-rain");
+    const star = document.createElement("div");
+    star.classList.add("star");
+    
+    // Random sizes for depth effect
+    const size = Math.random() * 4 + 1; // 1px to 5px
+    star.style.width = `${size}px`;
+    star.style.height = `${size}px`;
+    
+    // Random position across the width
+    star.style.left = `${Math.random() * 100}%`;
+    
+    // Random duration for natural flow
+    const duration = Math.random() * 3 + 2; // 2s to 5s
+    star.style.animationDuration = `${duration}s`;
+    
+    starRainContainer.appendChild(star);
+    
+    // Cleanup stars that have finished falling
+    setTimeout(() => {
+      star.remove();
+    }, duration * 1000);
+  }
+  
+  // Generate stars continuously
+  setInterval(createStar, 100); // Add a new star every 100ms
+  
+  // Existing functions for background music and gallery interaction
+  const music = document.getElementById("bgMusic");
+  const overlay = document.getElementById("overlay");
+  const enterBtn = document.getElementById("enterBtn");
+  const modal = document.getElementById("modal");
+  const modalImg = document.getElementById("modalImg");
+
+  // User click par music chalu aur parda gayab
+  enterBtn.addEventListener("click", () => {
+    music.play().catch(e => console.log("Music issue"));
+    overlay.style.display = "none";
+  });
+
+  // Photo zoom karne ke liye
+  document.querySelectorAll(".grid img").forEach(img => {
+    img.onclick = () => {
+      modal.style.display = "flex";
+      modalImg.src = img.src;
+    }
+  });
+
+  // Modal band karne ke liye
+  document.querySelector(".close").onclick = () => modal.style.display = "none";
+  window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; };
+</script>
+
+</body>
+</html>
